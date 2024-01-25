@@ -11,6 +11,7 @@ export default {
         };
     },
     methods: {
+    // aggiunta task
     addTask() {
         const newTask = {
             text: this.newTaskText,
@@ -18,6 +19,14 @@ export default {
         };
         this.Tasks.push(newTask);
         this.newTaskText = '';
+    },
+    // passaggio da todo a done e viceversa
+    toggleTaskCompletion(index) {
+        this.Tasks[index].completed = !this.Tasks[index].completed;
+    },
+    // eliminazione task
+    deleteTask(index) {
+        this.Tasks.splice(index, 1);
     }
     },
     mounted() {
@@ -57,14 +66,14 @@ export default {
             <div class="container text-center">
 
                 <ul>
-                    <li v-for="(task, index) in Tasks" :key="index" class="p-4 d-flex justify-content-between">
-                       <h3>{{ task.text }}</h3>
-    
-                       <span>{{ task.completed ? 'Done' : 'Todo' }}</span>
-                      
-                         
+                    <li v-for="(task, index) in Tasks" :key="index" class="p-4 d-flex justify-content-between" @click="toggleTaskCompletion(index)" @contextmenu.prevent="deleteTask(index)">
+                        <h3 :class="{ 'completed-task': task.completed }">
+                            {{ task.text }}
+                        </h3>
+                        <span>{{ task.completed ? 'Done' : 'Todo' }}</span>
                     </li>
                 </ul>
+                
 
             </div>
 
@@ -108,6 +117,11 @@ export default {
 
 li{
     list-style: none;
+
+    h3.completed-task {
+        text-decoration: line-through; 
+        color: #888; 
+    }
 }
 
 
