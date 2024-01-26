@@ -32,7 +32,7 @@ export default {
     mounted() {
 
     const t = this;
-    axios.get('http://localhost/php-todo-list-json/taskApi.php')
+    axios.get('http://localhost/php-todo-list-json/back-end/taskApi.php')
         .then(res => {
 
         // console.log("data: " + JSON.stringify(res.data));
