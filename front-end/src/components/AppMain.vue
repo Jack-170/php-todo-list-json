@@ -11,23 +11,45 @@ export default {
         };
     },
     methods: {
-    // aggiunta task
-    addTask() {
-        const newTask = {
-            text: this.newTaskText,
-            completed: false
+
+        createTask() {
+
+        const params = {
+            text: this.newTaskText
         };
-        this.Tasks.push(newTask);
-        this.newTaskText = '';
-    },
-    // passaggio da todo a done e viceversa
-    toggleTaskCompletion(index) {
-        this.Tasks[index].completed = !this.Tasks[index].completed;
-    },
-    // eliminazione task
-    deleteTask(index) {
-        this.Tasks.splice(index, 1);
-    }
+        const config = {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        };
+
+        axios.post("http://localhost/php-todo-list-json/back-end/createTask.php", params, config)         
+            .then(res => {
+
+                this.Tasks = res.data;
+                // console.log(res.data);
+                this.newTaskText = '';
+            })
+            .catch(err => console.log(err));
+
+        },
+    // aggiunta task
+    // addTask() {
+    //     const newTask = {
+    //         text: this.newTaskText,
+    //         completed: false
+    //     };
+    //     this.Tasks.push(newTask);
+    //     this.newTaskText = '';
+    // },
+    // // passaggio da todo a done e viceversa
+    // toggleTaskCompletion(index) {
+    //     this.Tasks[index].completed = !this.Tasks[index].completed;
+    // },
+    // // eliminazione task
+    // deleteTask(index) {
+    //     this.Tasks.splice(index, 1);
+    // }
     },
     mounted() {
 
@@ -57,7 +79,7 @@ export default {
 
             <h1>To Do LIST</h1>
 
-            <form class="pb-3" @submit.prevent="addTask">
+            <form class="pb-3"  @submit.prevent="createTask">
                 <input class="mx-2" type="text" v-model="newTaskText">
                 <input type="submit" value="aggiungi">
             </form>
